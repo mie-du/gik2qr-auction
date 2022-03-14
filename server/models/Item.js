@@ -1,13 +1,15 @@
 const { DataTypes } = require('sequelize');
+const { MODELS } = require('../../helpers/constants');
 const ModelBase = require('./ModelBase');
+const { initLowercase } = require('../../helpers/formatting');
 module.exports = class Item extends ModelBase {
   constructor() {
-    super('item');
+    super(MODELS.ITEM);
   }
 
   define(sequelize) {
     return sequelize.define(
-      this.name,
+      initLowercase(this.name),
       {
         title: { ...this.db.columns.stringShort },
         description: DataTypes.TEXT

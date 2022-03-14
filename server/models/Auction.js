@@ -1,13 +1,15 @@
 const { DataTypes } = require('sequelize');
+const { MODELS } = require('../../helpers/constants');
+const { initLowercase } = require('../../helpers/formatting');
 const ModelBase = require('./ModelBase');
 module.exports = class Item extends ModelBase {
   constructor() {
-    super('auction');
+    super(MODELS.AUCTION);
   }
 
   define(sequelize) {
     return sequelize.define(
-      this.name,
+      initLowercase(this.name),
       {
         startingPrice: {
           allowNull: false,

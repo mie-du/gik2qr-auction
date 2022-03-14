@@ -26,23 +26,6 @@ var server = http.createServer(app);
  */
 const db = require('../models/');
 db.sequelize.sync({ force: true }).then(async () => {
-  const user = {
-    firstName: '...this.db.columns.stringShort ',
-    lastName: '...this.db.columns.stringShort',
-    username: '...this.db.columns.stringShort',
-    email: 'hej@tjoho.com',
-    password: ' ...this.db.columns.stringLong '
-  };
-  const itemData = {
-    title: 'pryl',
-    userId: 1
-  };
-  await db.user.create(user);
-  const item = await db.item.create(itemData);
-
-  item.createItemImage({ imageUrl: 'http://h.d' });
-  item.createBid({ userId: 1, amount: 200 });
-
   server.listen(port, () => console.log(`Server running on localhost:${port}`));
 });
 server.on('error', onError);

@@ -12,5 +12,12 @@ module.exports = {
     3: 'Inväntar betalning',
     4: 'Betald',
     5: 'Avbruten'
+  },
+  MODELS: {
+    USER: 'user',
+    BID: 'bid',
+    ITEM: 'item',
+    ITEM_IMAGE: 'itemImage',
+    AUCTION: 'auction'
   }
 };

@@ -23,15 +23,15 @@ module.exports = class ModelBase {
     email: {
       message: '^E-postadressen är i ett felaktigt format.',
       length: {
-        min: 4,
-        max: 255
+        minimum: 4,
+        maximum: 255
       }
     },
     url: {
       message: '^Sökvägen är i ett felaktigt format.',
       length: {
-        min: 6,
-        max: 255
+        minimum: 6,
+        maximum: 255
       }
     }
   };
