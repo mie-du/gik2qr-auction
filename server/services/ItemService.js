@@ -15,12 +15,10 @@ module.exports = class ItemService extends ServiceBase {
     this.constraints = this.item.getValidation();
   }
 
-  async createAuction(id, auction) {
+  async startAuction(id, auction) {
     const item = await db.item.findOne({ where: { id } });
-    const existingAuction = await item.getAuctions({
-      where: { saleEnd: { [Op.gt]: new Date() } }
-    });
-    if (existingAuction.length > 0) {
+    const ongoingAuction = await this._getOngoingAuction(item);
+    if (ongoingAuction) {
       return this._createResponseInputError(
         'Det finns redan en pågående auktion för denna produkt.'
       );
@@ -32,6 +30,17 @@ module.exports = class ItemService extends ServiceBase {
       );
     }
     return this._createResponseSuccessObject(newAuction);
+  }
+
+  async cancelAuction(id, status) {
+    const item = await db.item.findOne({ where: { id } });
+    const ongoingAuction = await this._getOngoingAuction(item);
+    if (!ongoingAuction) {
+      return this._createResponseInputError(
+        'Det finns finns ingen pågående auktion att avsluta.'
+      );
+    }
+    await ongoingAuction.update({ status });
   }
 
   async addImage(id, itemImage) {
@@ -86,6 +95,13 @@ module.exports = class ItemService extends ServiceBase {
     });
 
     return await Promise.all(summarizedItems);
+  }
+
+  async _getOngoingAuction(item) {
+    const ongoingAuction = await item.getAuctions({
+      where: { saleEnd: { [Op.gt]: new Date() } }
+    });
+    return ongoingAuction[0];
   }
 
   async _getById(id) {

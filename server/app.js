@@ -11,6 +11,7 @@ app.use(cookieParser());
 
 app.use('/users', require('./routes/UsersRoute'));
 app.use('/items', require('./routes/ItemsRoute'));
+app.use('/auctions', require('./routes/AuctionsRoute'));
 
 /* Error handling - first 404, then catch other errors */
 app.use(function (req, res, next) {

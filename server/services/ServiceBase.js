@@ -100,6 +100,7 @@ module.exports = class ServiceBase {
   async _getAll() {
     return await this.resourceModel.findAll();
   }
+
   async _getById(id) {
     return await this.resourceModel.findOne({ where: { id } });
   }

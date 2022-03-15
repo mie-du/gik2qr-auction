@@ -19,6 +19,11 @@ module.exports = class RoutesBase {
         this.service = new ServiceClass();
         break;
       }
+      case MODELS.AUCTION: {
+        const ServiceClass = require('../services/AuctionService');
+        this.service = new ServiceClass();
+        break;
+      }
       default: {
         throw 'No service';
       }
@@ -68,7 +73,7 @@ module.exports = class RoutesBase {
       this.router.put('/', (req, res) => {
         const id = req.body.id;
         const data = req.body;
-        console.log(id);
+
         this.service.update(id, data).then((result) => {
           res.status(result.status).json(result.data);
         });
