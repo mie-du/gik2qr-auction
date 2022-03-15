@@ -7,12 +7,18 @@ module.exports = class Item extends ModelBase {
     super(MODELS.ITEM);
   }
 
+  /* Interface: 
+    title: STRING(50) req
+    description: DataTypes.TEXT
+  */
+
   define(sequelize) {
     return sequelize.define(
       initLowercase(this.name),
       {
-        title: { ...this.db.columns.stringShort },
-        description: DataTypes.TEXT
+        title: { ...this.db.columns.stringShortReq },
+        description: DataTypes.TEXT,
+        mainImage: { type: DataTypes.INTEGER }
       },
       { ...this.db.opt }
     );
@@ -22,9 +28,9 @@ module.exports = class Item extends ModelBase {
     return {
       title: {
         length: {
-          ...val.str.short,
-          tooShort: `^Fältet "Titel" ${val.tooShort}`,
-          tooLong: `^Fältet "Titel": ${val.tooLong}`
+          ...this.val.str.short,
+          tooShort: `^Fältet "Titel" ${this.val.str.tooShort}`,
+          tooLong: `^Fältet "Titel": ${this.val.str.tooLong}`
         }
       }
     };

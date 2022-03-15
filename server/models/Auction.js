@@ -7,6 +7,12 @@ module.exports = class Item extends ModelBase {
     super(MODELS.AUCTION);
   }
 
+  /* Interface: 
+    startingPrice: DOUBLE req
+    saleEnd: DATE req
+    status: INTEGER enum
+    fk: item
+  */
   define(sequelize) {
     return sequelize.define(
       initLowercase(this.name),

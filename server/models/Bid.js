@@ -7,6 +7,11 @@ module.exports = class Item extends ModelBase {
     super(MODELS.BID);
   }
 
+  /* Interface: 
+    amount: DOUBLE
+    fk: item
+    fk: user
+  */
   define(sequelize) {
     return sequelize.define(
       initLowercase(this.name),

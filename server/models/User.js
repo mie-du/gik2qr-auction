@@ -6,38 +6,15 @@ module.exports = class User extends ModelBase {
   constructor() {
     super(MODELS.USER);
   }
-
-  define(sequelize) {
-    return sequelize.define(
-      initLowercase(this.name),
-      {
-        firstName: { ...this.db.columns.stringShort },
-        lastName: { ...this.db.columns.stringShort },
-        username: { ...this.db.columns.stringShort },
-        email: { ...this.db.columns.email },
-        imageUrl: { ...this.db.columns.url },
-        password: { ...this.db.columns.stringLong }
-      },
-      {
-        hooks: {
-          beforeCreate: async (user) => {
-            if (user.password) {
-              const salt = await bcrypt.genSaltSync(10, 'a');
-              user.password = bcrypt.hashSync(user.password, salt);
-            }
-          },
-          beforeUpdate: async (user) => {
-            if (user.password) {
-              const salt = await bcrypt.genSaltSync(10, 'a');
-              user.password = bcrypt.hashSync(user.password, salt);
-            }
-          }
-        },
-        ...this.db.opt
-      }
-    );
-  }
-
+  /* Interface
+    firstName: STRING(50) req
+    lastName: STRING(50) req
+    email: STRING(255) req, 
+    password: STRING(64) encrypted req
+    username: STRING(50),
+    imageUrl: STRING(255),
+    bio: STRING(1000)
+*/
   getValidation() {
     return {
       firstName: {
@@ -68,5 +45,37 @@ module.exports = class User extends ModelBase {
         }
       }
     };
+  }
+
+  define(sequelize) {
+    return sequelize.define(
+      initLowercase(this.name),
+      {
+        firstName: { ...this.db.columns.stringShortReq },
+        lastName: { ...this.db.columns.stringShortReq },
+        email: { allowNull: false, ...this.db.columns.email },
+        password: { ...this.db.columns.encrypted },
+        username: { ...this.db.columns.stringShort },
+        imageUrl: { ...this.db.columns.url },
+        biography: { ...this.db.columns.stringLong }
+      },
+      {
+        hooks: {
+          beforeCreate: async (user) => {
+            if (user.password) {
+              const salt = await bcrypt.genSaltSync(10, 'a');
+              user.password = bcrypt.hashSync(user.password, salt);
+            }
+          },
+          beforeUpdate: async (user) => {
+            if (user.password) {
+              const salt = await bcrypt.genSaltSync(10, 'a');
+              user.password = bcrypt.hashSync(user.password, salt);
+            }
+          }
+        },
+        ...this.db.opt
+      }
+    );
   }
 };

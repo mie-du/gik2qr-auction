@@ -7,12 +7,16 @@ module.exports = class Item extends ModelBase {
     super(MODELS.ITEM_IMAGE);
   }
 
+  /* Interface: 
+    imageUrl: STRING(255) req
+    main: BOOL req
+    fk: Item
+  */
   define(sequelize) {
     return sequelize.define(
       initLowercase(this.name),
       {
-        imageUrl: { ...this.db.columns.url },
-        main: DataTypes.BOOLEAN
+        imageUrl: { allowNull: false, ...this.db.columns.url }
       },
 
       { ...this.db.opt }

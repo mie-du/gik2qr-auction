@@ -35,21 +35,37 @@ module.exports = class ModelBase {
       }
     }
   };
+  stringLong = {
+    type: DataTypes.STRING(LENGTH.MAX_LONG),
+    validation: {
+      len: [LENGTH.MIN, LENGTH.MAX_LONG]
+    }
+  };
+  stringShort = {
+    type: DataTypes.STRING(LENGTH.MAX_SHORT),
+    validation: {
+      len: [LENGTH.MIN, LENGTH.MAX_SHORT]
+    }
+  };
   db = {
     columns: {
       stringLong: {
-        type: DataTypes.STRING(LENGTH.MAX_LONG),
+        ...this.stringLong
+      },
+      stringLongReq: {
         allowNull: false,
-        validation: {
-          len: [LENGTH.MIN, LENGTH.MAX_LONG]
-        }
+        ...this.stringLong
       },
       stringShort: {
-        type: DataTypes.STRING(LENGTH.MAX_SHORT),
+        ...this.stringShort
+      },
+      stringShortReq: {
         allowNull: false,
-        validation: {
-          len: [LENGTH.MIN, LENGTH.MAX_SHORT]
-        }
+        ...this.stringShort
+      },
+      encrypted: {
+        type: DataTypes.STRING(64),
+        allowNull: false
       },
       email: {
         type: DataTypes.STRING(LENGTH.MAX_WEB),
