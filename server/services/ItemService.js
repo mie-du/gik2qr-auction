@@ -2,7 +2,6 @@ const ServiceBase = require('./ServiceBase');
 const Item = require('../models/Item');
 const db = require('../models');
 const validate = require('validate.js');
-const { Op } = require('sequelize');
 
 /* return await bcrypt.compareSync(password, hash); */
 module.exports = class ItemService extends ServiceBase {
@@ -13,34 +12,6 @@ module.exports = class ItemService extends ServiceBase {
     this.db = db;
     this.item = new Item();
     this.constraints = this.item.getValidation();
-  }
-
-  async startAuction(id, auction) {
-    const item = await db.item.findOne({ where: { id } });
-    const ongoingAuction = await this._getOngoingAuction(item);
-    if (ongoingAuction) {
-      return this._createResponseInputError(
-        'Det finns redan en pågående auktion för denna produkt.'
-      );
-    }
-    const newAuction = await item.createAuction(auction);
-    if (!newAuction) {
-      return this._createResponseError(
-        'Kunde inte skapa produkt, försök igen.'
-      );
-    }
-    return this._createResponseSuccessObject(newAuction);
-  }
-
-  async cancelAuction(id, status) {
-    const item = await db.item.findOne({ where: { id } });
-    const ongoingAuction = await this._getOngoingAuction(item);
-    if (!ongoingAuction) {
-      return this._createResponseInputError(
-        'Det finns finns ingen pågående auktion att avsluta.'
-      );
-    }
-    await ongoingAuction.update({ status });
   }
 
   async addImage(id, itemImage) {
@@ -97,13 +68,6 @@ module.exports = class ItemService extends ServiceBase {
     return await Promise.all(summarizedItems);
   }
 
-  async _getOngoingAuction(item) {
-    const ongoingAuction = await item.getAuctions({
-      where: { saleEnd: { [Op.gt]: new Date() } }
-    });
-    return ongoingAuction[0];
-  }
-
   async _getById(id) {
     return await this.db.item.findOne({
       where: { id },
@@ -113,7 +77,7 @@ module.exports = class ItemService extends ServiceBase {
 
   async _getAll() {
     return await this.db.item.findAll({
-      include: [db.itemImage, db.user, db.auction]
+      include: [db.itemImage, db.user, { model: db.auction, include: [db.bid] }]
     });
   }
 

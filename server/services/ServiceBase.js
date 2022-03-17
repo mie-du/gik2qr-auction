@@ -9,7 +9,7 @@ module.exports = class ServiceBase {
   async getAll() {
     try {
       const response = await this._getAll();
-      if (!response) {
+      if (response.length === 0) {
         return this._createResponseError('', 204);
       }
       return this._createResponseSuccessObject(response);

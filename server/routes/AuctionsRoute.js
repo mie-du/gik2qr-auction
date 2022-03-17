@@ -2,6 +2,8 @@ const { MODELS } = require('../../helpers/constants');
 
 const AuctionService = require('../services/AuctionService');
 const RoutesBase = require('./RoutesBase');
+const db = require('../models');
+const { Op } = require('sequelize');
 
 class ItemsRoute extends RoutesBase {
   itemService = null;
@@ -10,26 +12,49 @@ class ItemsRoute extends RoutesBase {
     this.auctionService = new AuctionService();
 
     this.addCrudRoutes();
+    this.addCustomRoutes();
   }
 
   addCustomRoutes() {
-    /*     this.router.post('/:id/addImage', (req, res) => {
+    this.router.get('/:id/currentAuction', (req, res) => {
       const id = req.params.id;
-      const data = req.body;
-      this.itemService.addImage(id, data).then((result) => res.send(result));
+
+      db.auction
+        .findOne({
+          where: db.Sequelize.and({ saleEnd: { [Op.gt]: new Date() } }, { id })
+        })
+        .then((result) => {
+          console.log('now', new Date());
+          console.log('end', result?.saleEnd);
+          res.send(result);
+        });
     });
 
-    this.router.post('/:id/createAuction', (req, res) => {
-      const id = req.params.id;
-      const data = req.body;
-      this.itemService
-        .createAuction(id, data)
-        .then((result) => res.send(result));
+    this.router.post('/:id/addBid', (req, res) => {
+      try {
+        const id = req.params.id;
+        const bid = req.body.amount;
+
+        this.auctionService
+          .addBid(id, bid)
+          .then((result) => res.status(result.status).json(result.data));
+      } catch (e) {
+        throw e;
+      }
     });
 
-    this.router.get('/summary', (req, res) => {
-      this.itemService.getSummary().then((result) => res.send(result));
-    }); */
+    this.router.put('/:id/:status', (req, res) => {
+      try {
+        const id = req.params.id;
+        const status = req.params.status;
+
+        this.auctionService
+          .setAuctionStatus(id, status)
+          .then((result) => res.status(result.status).json(result.data));
+      } catch (e) {
+        throw e;
+      }
+    });
   }
 }
 

@@ -7,11 +7,11 @@ module.exports = {
     MAX_LONG: 1000
   },
   AUCTION_STATUS: {
-    1: 'Pågående',
-    2: 'Såld',
-    3: 'Inväntar betalning',
-    4: 'Betald',
-    5: 'Avbruten'
+    ONGOING: 1,
+    SOLD: 2,
+    AWAITING_PAYMENT: 3,
+    PAYED: 4,
+    CANCELLED: 5
   },
   MODELS: {
     USER: 'user',

@@ -58,15 +58,16 @@ db.bid.belongsTo(db.user, {
   foreignKey: { allowNull: false },
   onDelete: 'CASCADE'
 });
-db.bid.belongsTo(db.item, {
+db.user.hasMany(db.bid);
+
+db.bid.belongsTo(db.auction, {
   foreignKey: { allowNull: false },
   onDelete: 'CASCADE'
 });
-
-db.item.hasMany(db.bid);
-db.user.hasMany(db.bid);
+db.auction.hasMany(db.bid);
 
 db.item.hasMany(db.auction);
+db.auction.belongsTo(db.item);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
