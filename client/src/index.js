@@ -5,7 +5,7 @@ import App from './App';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-import { colors, typography } from '../../helpers/constants';
+import { colors, typography } from './helpers/constants';
 
 /* Theme for MUI is created as below. The <ThemeProvider> should then be added with this object in the ReactDOM.render-fuction */
 const defaultTheme = createTheme();
@@ -18,9 +18,6 @@ const palette = {
   }),
   accPink: defaultTheme.palette.augmentColor({
     color: { main: colors.accPink.main }
-  }),
-  accBlue: defaultTheme.palette.augmentColor({
-    color: { main: colors.accBlue.main }
   })
 };
 

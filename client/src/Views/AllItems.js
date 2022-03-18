@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -6,36 +7,25 @@ import {
   CardMedia,
   Typography
 } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import ResourceModel from '../api/ResourceModel';
+import { ItemItemSmall } from '../Components/ItemItemSmall';
 
 export const AllItems = () => {
-  useEffect(() => {});
+  const [items, setItems] = useState([]);
+  let itemsModel = undefined;
+  useEffect(() => {
+    itemsModel = new ResourceModel('items');
+    itemsModel.getAll('items/getSummary').then((items) => {
+      console.log(items);
+      setItems(items);
+    });
+  }, []);
 
   return (
-    <div>
-      {arr.forEach((element) => {
-        <Card sx={{ maxWidth: 345 }}>
-          <CardMedia
-            component='img'
-            height='140'
-            image='/static/images/cards/contemplative-reptile.jpg'
-            alt='green iguana'
-          />
-          <CardContent>
-            <Typography gutterBottom variant='h5' component='div'>
-              Lizard
-            </Typography>
-            <Typography variant='body2' color='text.secondary'>
-              Lizards are a widespread group of squamate reptiles, with over
-              6,000 species, ranging across all continents except Antarctica
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size='small'>Share</Button>
-            <Button size='small'>Learn More</Button>
-          </CardActions>
-        </Card>;
-      })}
-    </div>
+    <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      {items &&
+        items.map((item) => <ItemItemSmall item={item} key={item.id} />)}
+    </Box>
   );
 };

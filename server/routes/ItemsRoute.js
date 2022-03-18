@@ -49,7 +49,7 @@ class ItemsRoute extends RoutesBase {
       }
     });
 
-    this.router.get('/summary', (req, res) => {
+    this.router.get('/getSummary', (req, res) => {
       try {
         this.itemService.getSummary().then((result) => res.send(result));
       } catch (e) {

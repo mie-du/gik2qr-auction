@@ -7,7 +7,7 @@ import {
   Typography
 } from '@mui/material';
 import './App.css';
-import { colors } from '../../helpers/constants';
+import { colors } from './helpers/constants';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import { ItemDetail } from './Views/ItemDetail';
@@ -21,9 +21,9 @@ function App() {
       style={{ backgroundColor: colors.secondary.light, minHeight: '100vh' }}>
       <Router>
         <header
-          style={{ backgroundColor: colors.accBlue.light, padding: '1rem' }}>
+          style={{ backgroundColor: colors.accPink.dark, padding: '1rem' }}>
           <Typography
-            sx={{ textShadow: `2px 2px 5px ${colors.accBlue.main}` }}
+            sx={{ textShadow: `2px 2px 5px ${colors.primary.dark}` }}
             variant='h1'>
             Tassens auktioner
           </Typography>
@@ -47,7 +47,9 @@ function App() {
         </Toolbar>
 
         <Container maxWidth='xl'>
-          <Paper elevation={8} sx={{ padding: 3 }}>
+          <Paper
+            elevation={8}
+            sx={{ padding: 3, backgroundColor: 'rgba(255,255,255,.6)' }}>
             <Switch>
               <Route exact path='/' component={AllItems}></Route>
               <Route exact path='/item/:id' component={ItemDetail}></Route>
