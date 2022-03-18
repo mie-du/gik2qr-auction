@@ -7,11 +7,11 @@ import {
   Typography
 } from '@mui/material';
 import './App.css';
-import { colors } from './helpers/constants';
+import { colors } from '../../helpers/constants';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import { Box } from '@mui/system';
+
 import { ItemDetail } from './Views/ItemDetail';
-import { amber, green } from '@mui/material/colors';
+
 import { AllItems } from './Views/AllItems';
 
 function App() {
