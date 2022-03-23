@@ -6,11 +6,14 @@ const LENGTH = {
   MAX_LONG: 1000
 };
 const AUCTION_STATUS = {
-  ONGOING: 1,
-  SOLD: 2,
-  AWAITING_PAYMENT: 3,
-  PAYED: 4,
-  CANCELLED: 5
+  ACTIVE: 1,
+  FINISHED: 2,
+  CANCELLED: 3
+};
+const ITEM_LIST = {
+  WITH_AUCTION: 'auction',
+  WITHOUT_AUCTION: 'no auction',
+  ALL: 'all'
 };
 const MODELS = {
   USER: 'user',
@@ -54,6 +57,10 @@ const typography = {
     color: colors.primary.main,
     fontVariant: 'small-caps'
   },
+  h4: {
+    fontFamily: ['Montserrat', 'Fira Sans', 'sans-serif'].join(','),
+    color: colors.accPink.dark
+  },
   h5: {
     fontFamily: ['Montserrat', 'Fira Sans', 'sans-serif'].join(','),
     color: colors.accPink.dark
@@ -64,6 +71,7 @@ const typography = {
   }
 };
 module.exports = {
+  ITEM_LIST,
   LENGTH,
   AUCTION_STATUS,
   MODELS,

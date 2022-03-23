@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@mui/lab": "^5.0.0-alpha.74"
+  },
+  "dependencies": {
+    "@date-io/date-fns": "^2.13.1"
+  }
+}

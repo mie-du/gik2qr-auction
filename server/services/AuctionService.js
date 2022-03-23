@@ -23,10 +23,12 @@ module.exports = class AuctionService extends ServiceBase {
           'Det finns redan en pågående auktion för denna produkt.'
         );
       }
+
+      auction.status = AUCTION_STATUS.ACTIVE;
       const newAuction = await item.createAuction(auction);
       if (!newAuction) {
         return this._createResponseError(
-          'Kunde inte skapa produkt, försök igen.'
+          'Kunde inte skapa auktion, försök igen.'
         );
       }
       return this._createResponseSuccessObject(newAuction);
@@ -44,15 +46,16 @@ module.exports = class AuctionService extends ServiceBase {
           'Det finns finns ingen pågående auktion att avsluta.'
         );
       }
-      const response = await ongoingAuction.update({
-        status: AUCTION_STATUS.CANCELLED
-      });
+      const response = await db.auction.update(
+        { status: AUCTION_STATUS.CANCELLED },
+        { where: { itemId } }
+      );
       if (!response[0]) {
         return this._createResponseError(
-          'Kunde inte uppdatera användare, försök igen.'
+          'Kunde inte uppdatera auktion, försök igen.'
         );
       }
-      return this._createResponseMessage('Användaren uppdaterades.');
+      return this._createResponseMessage('Auktionen uppdaterades.');
     } catch (e) {
       return this._createResponseError(e.message, e.status, e.stack);
     }
@@ -131,6 +134,18 @@ module.exports = class AuctionService extends ServiceBase {
     });
 
     return ongoingAuctions[0];
+  }
+
+  async _getAll() {
+    try {
+      const response = await db.auction.findAll({ include: [db.item, db.bid] });
+      if (response.length === 0) {
+        return this._createResponseError('', 204);
+      }
+      return this._createResponseSuccessObject(response);
+    } catch (e) {
+      return this._createResponseError(e.message, e.status, e.stack);
+    }
   }
 
   async _create(data) {

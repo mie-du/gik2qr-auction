@@ -2,6 +2,8 @@ const ServiceBase = require('./ServiceBase');
 const Item = require('../models/Item');
 const db = require('../models');
 const validate = require('validate.js');
+const { Op } = require('sequelize');
+const { AUCTION_STATUS } = require('../../helpers/constants');
 
 /* return await bcrypt.compareSync(password, hash); */
 module.exports = class ItemService extends ServiceBase {
@@ -44,19 +46,24 @@ module.exports = class ItemService extends ServiceBase {
   }
 
   async getSummary() {
-    const items = await this.resourceModel.findAll({
-      include: [db.itemImage, db.user]
+    let items = await this.resourceModel.findAll({
+      include: [db.itemImage, db.user, db.auction]
     });
-
     const summarizedItems = items.map(async (item) => {
       const mainImage = await db.itemImage.findOne({
         where: { id: item.mainImage }
+      });
+      const activeAuction = await db.auction.findOne({
+        where: {
+          [Op.and]: [{ itemId: item.id }, { status: AUCTION_STATUS.ACTIVE }]
+        }
       });
 
       return {
         id: item.id,
         title: item.title,
         description: item.description,
+        auction: activeAuction,
         seller: {
           name: `${item.user.firstName} ${item.user.lastName}`,
           imageUrl: item.user.imageUrl

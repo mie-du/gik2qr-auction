@@ -1,21 +1,12 @@
-import {
-  AppBar,
-  Button,
-  Container,
-  Paper,
-  Toolbar,
-  Typography
-} from '@mui/material';
+import { Button, Container, Paper, Toolbar, Typography } from '@mui/material';
 import './App.css';
 import { colors } from './helpers/constants';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-
 import { ItemDetail } from './Views/ItemDetail';
-
 import { AllItems } from './Views/AllItems';
+import { AuctionEdit } from './Views/AuctionEdit';
 
 function App() {
-  console.log();
   return (
     <div
       style={{ backgroundColor: colors.secondary.light, minHeight: '100vh' }}>
@@ -36,13 +27,13 @@ function App() {
             color: 'white'
           }}>
           <Button color='inherit'>
-            <Link to='/'>Visa alla produkter</Link>
+            <Link to='/items'>Visa alla produkter</Link>
           </Button>
           <Button color='inherit'>
             <Link to='/auctions/'>Visa pågående auktioner</Link>
           </Button>
           <Button color='inherit'>
-            <Link to='/items/new'>Skapa produkt</Link>
+            <Link to='/auctions/new'>Skapa auktion</Link>
           </Button>
         </Toolbar>
 
@@ -52,9 +43,11 @@ function App() {
             sx={{ padding: 3, backgroundColor: 'rgba(255,255,255,.6)' }}>
             <Switch>
               <Route exact path='/' component={AllItems}></Route>
-              <Route exact path='/item/:id' component={ItemDetail}></Route>
-              <Route exact path='/item/:id' component={ItemDetail}></Route>
-              <Route exact path='/item/:id' component={ItemDetail}></Route>
+              <Route exact path='/items' component={AllItems}></Route>
+              <Route exact path='/items/new' component={AllItems}></Route>
+              <Route path='/items/:id' component={ItemDetail}></Route>
+              <Route exact path='/auctions' component={AllItems}></Route>
+              <Route path='/auctions/new' component={AuctionEdit}></Route>
             </Switch>
           </Paper>
         </Container>

@@ -6,8 +6,10 @@ export default class ResourceModel {
     this.resourceUrl = resourceUrl;
   }
 
-  async getAll(url = this.resourceUrl) {
-    const result = await api.get(url);
+  async getAll(extras = '') {
+    const result = await api
+      .get(`${this.resourceUrl}/${extras}`)
+      .catch((e) => e.response);
     if (result.status === 200) return result.data;
     else {
       console.log(result.status);
